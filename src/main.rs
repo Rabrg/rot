@@ -4,6 +4,8 @@
 
 use core::panic::PanicInfo;
 
+mod vga_buffer;
+
 /// This function is called on panic.
 #[panic_implementation]
 #[no_mangle]
