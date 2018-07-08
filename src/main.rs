@@ -4,6 +4,9 @@
 
 extern crate volatile;
 
+#[macro_use]
+extern crate lazy_static;
+
 use core::panic::PanicInfo;
 
 mod vga_buffer;
