@@ -1,5 +1,5 @@
 #[allow(dead_code)]
-#[deprive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(u8)]
 pub enum Color {
     Black = 0,
@@ -20,7 +20,7 @@ pub enum Color {
     White = 15,
 }
 
-#[deprive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 struct ColorCode(u8);
 
 impl ColorCode {
@@ -29,7 +29,7 @@ impl ColorCode {
     }
 }
 
-#[deprive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(C)]
 struct ScreenChar {
     ascii_character: u8,
@@ -40,7 +40,7 @@ const BUFFER_HEIGHT: usize = 25;
 const BUFFER_WIDTH: usize = 80;
 
 struct Buffer {
-    chars: [[ScreenChar; BUFFER_WIDTH]; BUFFER_HEIGHT]
+    chars: [[ScreenChar; BUFFER_WIDTH]; BUFFER_HEIGHT],
 }
 
 pub struct Writer {
@@ -55,7 +55,7 @@ impl Writer {
             match byte {
                 // printable ASCII byte or newline
                 0x20...0x7e | b'\n' => self.write_byte(byte),
-                // not p[art of printable ASCII range
+                // not part of printable ASCII range
                 _ => self.write_byte(0xfe),
             }
         }
@@ -65,7 +65,7 @@ impl Writer {
         match byte {
             b'\n' => self.new_line(),
             byte => {
-                if self.column_position == BUFFER_WIDTH {
+                if self.column_position >= BUFFER_WIDTH {
                     self.new_line();
                 }
 
@@ -75,14 +75,12 @@ impl Writer {
                 let color_code = self.color_code;
                 self.buffer.chars[row][col] = ScreenChar {
                     ascii_character: byte,
-                    color_code,
+                    color_code: color_code,
                 };
                 self.column_position += 1;
             }
         }
     }
 
-    fn new_line(&mut self) {
-        /* TODO */
-    }
+    fn new_line(&mut self) { /* TODO */ }
 }
