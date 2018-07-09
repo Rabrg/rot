@@ -1,12 +1,13 @@
 use volatile::Volatile;
 use core::fmt;
+use spin::Mutex;
 
 lazy_static! {
-    pub static ref WRITER: Writer = Writer {
+    pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer {
         column_position: 0,
         color_code: ColorCode::new(Color::Yellow, Color::Black),
         buffer: unsafe { &mut *(0xb8000 as *mut Buffer) },
-    };
+    });
 }
 
 #[allow(dead_code)]
@@ -120,12 +121,4 @@ impl fmt::Write for Writer {
         self.write_string(s);
         Ok(())
     }
-}
-
-pub fn print_something() {
-    use core::fmt::Write;
-//    WRITER.write_byte(b'H');
-//    WRITER.write_string("ello ");
-//    writeln!(WRITER, "The numbers are {} and {}", 42, 1.0 / 3.0).unwrap();
-//    writeln!(WRITER, "The other numbers are {} and {}", 69, 69.0 / 3294.0).unwrap();
 }
