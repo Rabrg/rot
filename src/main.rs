@@ -16,7 +16,7 @@ mod vga_buffer;
 #[panic_implementation]
 #[no_mangle]
 pub fn panic(_info: &PanicInfo) -> ! {
-    println!("{}", info);
+    println!("{}", _info);
     loop {}
 }
 
