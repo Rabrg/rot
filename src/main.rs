@@ -9,6 +9,7 @@ extern crate volatile;
 
 use core::panic::PanicInfo;
 
+#[macro_use]
 mod vga_buffer;
 
 /// This function is called on panic.
@@ -20,11 +21,7 @@ pub fn panic(_info: &PanicInfo) -> ! {
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
-    use core::fmt::Write;
-
-    writeln!(vga_buffer::WRITER.lock(), "Welcome to Rot OS").unwrap();
-    vga_buffer::WRITER.lock().write_string("Hello again");
-    write!(vga_buffer::WRITER.lock(), ", some numbers: {} {}", 42, 1.337).unwrap();
+    println!("Welcome to Rot OS");
 
     loop {}
 }
